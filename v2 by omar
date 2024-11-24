@@ -13112,7 +13112,7 @@ local players = game:GetService("Players")
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Npc Hub";
     Text = "Loading Done!";
-    Icon = "rbxthumb://type=Asset&id=112696253172872&w=150&h=150";
+    Icon = "rbxthumb://type=Asset&id=103035581065338&w=150&h=150";
     Duration = 10
 })
 
