@@ -1,0 +1,487 @@
+local NotificationLibrary = loadstring(game:HttpGet("https://pastebin.com/raw/7UM0BXpt"))()
+local Fluent = loadstring(game:HttpGet("https://pastebin.com/raw/7cEHWhKn"))()
+local InterfaceManager = loadstring(game:HttpGet("https://pastebin.com/raw/JpqE6yV2"))()
+
+local Window = Fluent:CreateWindow({
+    Title = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
+    SubTitle = "By Omar | " ..  identifyexecutor(),
+    TabWidth = 160,
+    Size = UDim2.fromOffset(520, 320),
+    Acrylic = true,
+    Theme = "Aqua",
+    MinimizeKey = Enum.KeyCode.LeftControl
+})
+
+local Tabs = {
+    Main = Window:AddTab({ Title = "» Main", Icon = "square-stack" }),
+    Teleport = Window:AddTab({ Title = "» Teleport", Icon = "arrow-left-right" }),
+    Misc = Window:AddTab({ Title = "Misc", Icon = "shield" }),
+    Settings = Window:AddTab({ Title = "Settings", Icon = "settings" })
+}
+
+-- locals
+local Player = game:GetService("Players").LocalPlayer
+local RunService = game:GetService("RunService")
+local equipmentStats = Player:FindFirstChild("EquipmentStats")
+local VirtualUser = game:GetService('VirtualUser')
+
+-- Get Tools
+local function GetToolFromCharacter()
+    local character = game:GetService("Players").LocalPlayer.Character
+    local tools = character and character:GetChildren() or {}
+
+    local previousTool
+    for _, tool in ipairs(tools) do
+        if tool:IsA("Tool") then
+            return tool
+        else
+            previousTool = tool
+        end
+    end
+
+    return previousTool
+end
+
+-- Anti AFK
+Player.Idled:Connect(function()
+	VirtualUser:Button2Down(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+	wait(0.25)
+	VirtualUser:Button2Up(Vector2.new(0,0), workspace.CurrentCamera.CFrame)
+end)
+
+-- Default Values
+getgenv().TypePet = "Normal"
+getgenv().StartDupe = false
+getgenv().Drop = false
+getgenv().sell = nil
+getgenv().upgrade = false
+
+-- # Main Tab
+local Dupe = Tabs.Main:AddSection("Dupe")
+
+local PetTypeDropdown = Dupe:AddDropdown("PetTypeDropdown", {
+    Title = "Select Pet Type",
+    Values = {"Normal", "Colored"},
+    Multi = false,
+    Default = 1,
+    Callback = function(t)
+        getgenv().TypePet = t
+    end
+})
+
+local DupeToggle = Dupe:AddToggle("DupeToggle", {
+    Title = "Auto Dupe",
+    Default = false,
+    Callback = function(t)
+        getgenv().StartDupe = t
+    end
+})
+
+local Drop = Tabs.Main:AddSection("Drop")
+
+local Paragraph = Drop:AddParagraph({
+    Title = "Information",
+    Content = "This only Drops current pet on hands"
+})
+
+local DropToggle = Drop:AddToggle("DropToggle", {
+    Title = "Auto Drop pet",
+    Default = false,
+    Callback = function(d)
+        getgenv().Drop = d
+
+        if getgenv().Drop then
+            performAutoActions()
+        end
+    end
+})
+
+local Sell = Tabs.Main:AddSection("Sell")
+
+local Sellinput = Sell:AddInput("Sellinput", {
+    Title = "Pets to Sell",
+    Placeholder = "Enter Quantity",
+    Numeric = true,
+    Finished = false,
+    Callback = function(v)
+        getgenv().sell = v
+    end
+})
+
+local sell = Sell:AddButton({
+    Title = "Sell Now",
+    Description = "Works with current pet",
+    Callback = function()
+        local ohString1 = "sell"
+        local ohNumber2 = GetToolFromCharacter().Name
+        local ohNumber3 = getgenv().sell or 1
+
+        game:GetService("ReplicatedStorage").Events.Coin.CoinMarketRE:FireServer(ohString1, ohNumber2, ohNumber3)
+    end
+})
+
+local Upgrade = Tabs.Main:AddSection("Fuse")
+
+local FuseInfo = Upgrade:AddParagraph({
+    Title = "Info",
+    Content = "Equip Bunny to use Fuse Upgrade"
+})
+
+local FuseToggle = Upgrade:AddToggle("FuseToggle", {
+    Title = "Auto Fuse",
+    Default = false,
+    Callback = function(t)
+        getgenv().upgrade = t
+    end
+})
+
+-- # Teleport Tab
+
+local config = Tabs.Teleport:AddSection("Baseplate")
+
+local partName = "kjonfjhsadfkhj231sdaf"
+local part = game.Workspace:FindFirstChild(partName)
+
+if not part then
+    part = Instance.new("Part")
+    part.Name = partName
+    part.Size = Vector3.new(100, 1, 100)
+    part.Anchored = true
+    part.Position = Vector3.new(0, 800, 10000)
+    part.Transparency = 0
+    part.BrickColor = BrickColor.new("Bright blue")
+    part.Parent = game.Workspace
+else
+    print("BasePlate already exist")
+end
+
+local function ChangeColor(newColor)
+    part.BrickColor = BrickColor.new(newColor)
+end
+
+local function ChangeTransparency(newTransparency)
+    part.Transparency = tonumber(newTransparency)
+end
+
+local function teleportToPart()
+    local player = game.Players.LocalPlayer
+    local character = player.Character
+
+    if character then
+        local humanoidRootPart = character:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
+            humanoidRootPart.CFrame = part.CFrame + Vector3.new(0, 5, 0)
+        end
+    end
+end
+
+local function Spawn()
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(82.1439209, 15.9092922, -266.581451)
+end
+
+local Teleport = config:AddButton({
+    Title = "Create Plate",
+    Description = "Create a baseplate",
+    Callback = function()
+        if not game.Workspace:FindFirstChild(partName) then
+            part.Parent = game.Workspace
+        else
+            NotificationLibrary:SendNotification("Error", 'Baseplate exists', 3)
+        end
+    end
+})
+
+local Colorpicker = config:AddColorpicker("Colorpicker", {
+    Title = "Change Color",
+    Default = Color3.fromRGB(96, 205, 255),
+    Callback = function(t)
+        local newColor = t
+        ChangeColor(newColor)
+    end
+})
+
+local BaseSlider = config:AddSlider("BaseSlider", {
+    Title = "Transparency",
+    Description = "0 = Solid, 1 = Invisible",
+    Default = 0.5,
+    Min = 0,
+    Max = 1,
+    Rounding = 1,
+    Callback = function(t)
+        local newTransparency = t
+        ChangeTransparency(newTransparency)
+    end
+})
+
+local Teleport = Tabs.Teleport:AddSection("Teleports")
+
+local Teleport1 = Teleport:AddButton({
+    Title = "Spawn",
+    Description = "Teleport to Spawn",
+    Callback = function()
+        Spawn()
+    end
+})
+
+local Teleport2 = Teleport:AddButton({
+    Title = "To Plate",
+    Description = "Click 'Create Plate' first",
+    Callback = function()
+        teleportToPart()
+    end
+})
+
+-- # Misc Tab
+
+local Tittles = Tabs.Misc:AddSection("Titles")
+
+local Title = Tittles:AddButton({
+    Title = "Get Titles",
+    Description = "Titles reset on leave/rejoin",
+    Callback = function()
+        __Titles()
+    end
+})
+
+local MiscGroup = Tabs.Misc:AddSection("Misc")
+
+local function serverHop()
+    local Player = game.Players.LocalPlayer
+    local Http = game:GetService("HttpService")
+    local TPS = game:GetService("TeleportService")
+    local Api = "https://games.roblox.com/v1/games/"
+
+    local _place, _id = game.PlaceId, game.JobId
+    local _servers = Api .. _place .. "/servers/Public?sortOrder=Desc&limit=100"
+    
+    function ListServers(cursor)
+        local Raw = game:HttpGet(_servers .. ((cursor and "&cursor=" .. cursor) or ""))
+        return Http:JSONDecode(Raw)
+    end
+    
+    local Next
+    
+    repeat
+        local Servers = ListServers(Next)
+        
+        for i, v in next, Servers.data do
+            if v.playing < v.maxPlayers and v.id ~= _id then
+                local s, r = pcall(TPS.TeleportToPlaceInstance, TPS, _place, v.id, Player)
+                if s then
+                    break
+                end
+            end
+        end
+        
+        Next = Servers.nextPageCursor
+    until not Next
+end
+
+local function LowPlayer()
+    local Http = game:GetService("HttpService")
+    local TPS = game:GetService("TeleportService")
+    local Api = "https://games.roblox.com/v1/games/"
+    
+    local _place = game.PlaceId
+    local _servers = Api .. _place .. "/servers/Public?sortOrder=Asc&limit=100"
+    
+    function ListServers(cursor)
+        local Raw = game:HttpGet(_servers .. ((cursor and "&cursor=" .. cursor) or ""))
+        return Http:JSONDecode(Raw)
+    end
+    
+    local Server, Next
+    
+    repeat
+        local Servers = ListServers(Next)
+        Server = Servers.data[1]
+        Next = Servers.nextPageCursor
+    until Server
+    
+    TPS:TeleportToPlaceInstance(_place, Server.id, game.Players.LocalPlayer)
+end
+
+local SpeedSlider = MiscGroup:AddSlider("SpeedSlider", {
+    Title = "Walk Speed",
+    Description = "Adjust your walking speed",
+    Default = 19,
+    Min = 16,
+    Max = 500,
+    Rounding = 1,
+    Callback = function(s)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = s
+    end
+})
+
+MiscGroup:AddButton({
+    Title = "Rejoin",
+    Description = "Rejoin game",
+    Callback = function()
+        Window:Dialog({
+            Title = "Confirm Rejoin",
+            Content = "Are you sure you want to rejoin?",
+            Buttons = {
+                {
+                    Title = "Yes",
+                    Callback = function()
+                        game:GetService("TeleportService"):Teleport(7346416636, game:GetService("Players").LocalPlayer)
+                    end
+                },
+                {
+                    Title = "No",
+                    Callback = function()
+                        print("Rejoin canceled.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+MiscGroup:AddButton({
+    Title = "Server Hop",
+    Description = "Hop to another server",
+    Callback = function()
+        Window:Dialog({
+            Title = "Confirm Hop",
+            Content = "Are you sure you want to hop?",
+            Buttons = {
+                {
+                    Title = "Yes",
+                    Callback = function()
+                        serverHop()
+                    end
+                },
+                {
+                    Title = "No",
+                    Callback = function()
+                        print("Hop canceled.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+MiscGroup:AddButton({
+    Title = "Low Player Server",
+    Description = "Join low player server",
+    Callback = function()
+        Window:Dialog({
+            Title = "Confirm Low Player",
+            Content = "Rejoin low-players server?",
+            Buttons = {
+                {
+                    Title = "Yes",
+                    Callback = function()
+                        LowPlayer()
+                    end
+                },
+                {
+                    Title = "No",
+                    Callback = function()
+                        print("Low player server join canceled.")
+                    end
+                }
+            }
+        })
+    end
+})
+
+spawn(function()
+    while RunService.Heartbeat:Wait() do
+        if getgenv().StartDupe then
+            local success, err = pcall(function()
+                local ohString1 = GetToolFromCharacter().Name
+                local ohNumber2 = 6
+                local ohString3 = getgenv().TypePet
+
+                game:GetService("ReplicatedStorage").Functions.Upgrade.UpgradeRF:InvokeServer(ohString1, ohNumber2, ohString3)
+            end)
+
+            if not success then
+            end
+        end
+    end
+end)
+
+function dropItem()
+    game:GetService("ReplicatedStorage").Events.PickAndDrop.PickAndDropRE:FireServer("Drop")
+end
+
+function performTakeTool(itemId)
+    local toolId = tonumber(itemId)
+    game:GetService("ReplicatedStorage").Events.PickAndDrop.PickAndDropRE:FireServer("TakeTool", toolId)
+end
+
+function performAutoActions()
+    while getgenv().Drop do
+        local toolId = GetToolFromCharacter() and GetToolFromCharacter().Name
+        if toolId then
+            dropItem()
+            wait(0.5)
+            performTakeTool(toolId)
+            wait(0.5)
+        end
+    end
+end
+
+spawn(function()
+    while RunService.Heartbeat:Wait() do
+        if getgenv().upgrade then
+            local success, err = pcall(function()
+                local toolName = GetToolFromCharacter() and GetToolFromCharacter().Name
+                if toolName then
+                    local args = {
+                        [1] = {
+                            [toolName] = 1
+                        }
+                    }
+                    game:GetService("ReplicatedStorage").Functions.Fuse.FuseRF:InvokeServer(unpack(args))
+                end
+            end)
+
+            if not success then
+            end
+        end
+    end
+end)
+
+local valuesToAdd = {
+    "10011", "10012", "10013", "10014", "10015",
+    "10025", "10035", "10044", "10045", "10054",
+    "10055", "10063", "20011", "20021", "20031",
+    "20041", "20051", "20061", "20071", "20081",
+    "20091", "20101", "20111", "90001"
+}
+
+function __Titles()
+    local titleStock = equipmentStats:FindFirstChild("TitleStock")
+
+    if titleStock and titleStock:IsA("Folder") then
+        for _, valueName in ipairs(valuesToAdd) do
+            local existingValue = titleStock:FindFirstChild(valueName)
+            if not existingValue then
+                local newValue = Instance.new("BoolValue")
+                newValue.Name = valueName
+                newValue.Value = true
+                newValue.Parent = titleStock
+            end
+        end
+    end
+end
+
+
+
+
+
+
+
+InterfaceManager:SetLibrary(Fluent)
+InterfaceManager:SetFolder("FluentScriptHub")
+InterfaceManager:BuildInterfaceSection(Tabs.Settings)
+Window:SelectTab(1)
+
+if game:GetService("UserInputService").TouchEnabled then
+    local a=game.CoreGui:FindFirstChild("CodeRift(Toggle)")if a then a:Destroy()end;local b=Instance.new("ScreenGui")b.Name="CodeRift(Toggle)"b.Parent=game.CoreGui;local c=Instance.new("Frame",b)c.BorderSizePixel=0;c.BackgroundColor3=Color3.fromRGB(255,255,255)c.Size=UDim2.new(0.08494,0,0.1102,0)c.Position=UDim2.new(0.01607,0,0.44901,0)c.BorderColor3=Color3.fromRGB(0,0,0)c.Name="Main"c.BackgroundTransparency=1;local d=Instance.new("ImageButton",c)d.BorderSizePixel=0;d.BackgroundColor3=Color3.fromRGB(255,255,255)d.Image="rbxassetid://103035581065338"d.Size=UDim2.new(0.5,0,0.6,0)d.BackgroundTransparency=1;d.BorderColor3=Color3.fromRGB(0,0,0)d.Position=UDim2.new(0.0144,0,-0.04478,0)d.Draggable=true;local e=Instance.new("UICorner",d)e.CornerRadius=UDim.new(0.1,0)local f=Instance.new("UIStroke",d)f.ApplyStrokeMode=Enum.ApplyStrokeMode.Border;f.Thickness=2;f.Color=Color3.fromRGB(30,30,30)d.MouseButton1Click:Connect(function()Window:Minimize()end)
+end
