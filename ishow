@@ -1384,7 +1384,7 @@ L2.BorderSizePixel = 0
 L2.Position = UDim2.new(0.120833337, 0, 0.0952890813, 0)
 L2.Size = UDim2.new(0, 53.5, 0, 53.5)
 L2.BackgroundTransparency = 1.000
-L2.Image = "rbxassetid://119256053923907"
+L2.Image = "rbxassetid://103035581065338"
 L2.Draggable = true
 L2.MouseButton1Click:Connect(function()
   game:GetService("VirtualInputManager"):SendKeyEvent(true,305,false,game)
@@ -13112,7 +13112,7 @@ local players = game:GetService("Players")
 game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Npc Hub";
     Text = "Loading Done!";
-    Icon = "rbxthumb://type=Asset&id=119256053923907&w=150&h=150";
+    Icon = "rbxthumb://type=Asset&id=103035581065338&w=150&h=150";
     Duration = 10
 })
 
