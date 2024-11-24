@@ -3502,7 +3502,7 @@ I:Label("Script Created By Jupiter ")
 
 I:Label("Everyone Goes Into Socialize")
 I:Button("Copy Discord Link",function()
-setclipboard("https://discord.com/invite/") 
+setclipboard("https://discord.com/invite/45R8tUmNw7") 
 end)
 
 I:Seperator("Time")
