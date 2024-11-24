@@ -13110,9 +13110,9 @@ end)
 --------------------------------------------------------------------------------------------------------
 local players = game:GetService("Players")
 game:GetService("StarterGui"):SetCore("SendNotification", {
-    Title = "Npc Hub";
+    Title = "Project V";
     Text = "Loading Done!";
-    Icon = "rbxthumb://type=Asset&id=112696253172872&w=150&h=150";
+    Icon = "rbxthumb://type=Asset&id=17531891806&w=150&h=150";
     Duration = 10
 })
 
