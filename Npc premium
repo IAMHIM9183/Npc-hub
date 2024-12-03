@@ -11,7 +11,7 @@ end
 game.StarterGui:SetCore(
     "SendNotification",
     {
-        Title = "hadesgod[PREMIUM]",
+        Title = "Hades God[PREMIUM]",
         Text = "Loading",
         Duration = 5
     })
@@ -10249,7 +10249,7 @@ print("load xong r")
 print("Developer: ZkanixZ#0 contact Facebook: Windy Kerenza or discord: ZKanixZ#0")
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 game.StarterGui:SetCore("SendNotification", {
-Title = "Premium Npc Hub",
+Title = "Premium Hades God",
 Text = "Do not leak or blacklist",
 Duration = 5,
 })
