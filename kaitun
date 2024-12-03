@@ -125,7 +125,7 @@ function Notify.new(Title,SupTitle,Sec)
 
     return Notify
 end
-Notify.new("Dummy Hub | Loading","Kaitun Mode",5)
+Notify.new("Hades God Hub | Loading","Kaitun Mode",5)
 
 if not game:IsLoaded() then repeat game.Loaded:Wait() until game:IsLoaded() end
 repeat wait() until game.Players
@@ -2131,7 +2131,7 @@ function FarmSaber()
     		TP(v.HumanoidRootPart.CFrame * CFrame.new(0,40,0))
     		AttackNoCD()
     	until not Startk or not v or not v:FindFirstChild("Humanoid") or not v:FindFirstChild("HumanoidRootPart") or v.Humanoid.Health <= 0 
-    	Notify.new("Dummy Hub | Quest","Saber: ✅",99999999999)
+    	Notify.new("Hades God Hub | Quest","Saber: ✅",99999999999)
     end
 end
 function FindBossWold2Quest()
