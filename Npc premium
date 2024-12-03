@@ -11,7 +11,7 @@ end
 game.StarterGui:SetCore(
     "SendNotification",
     {
-        Title = "Npc Hub",
+        Title = "hadesgod[PREMIUM]",
         Text = "Loading",
         Duration = 5
     })
@@ -2760,7 +2760,7 @@ loadSettings()
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "Npc Hub [Premium]",
+    Title = "HadesGod [Premium]",
     SubTitle = " By Omar",
     TabWidth = 140,
     Size = UDim2.fromOffset(480, 320),
