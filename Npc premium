@@ -2760,8 +2760,8 @@ loadSettings()
 local Fluent = loadstring(game:HttpGet("https://github.com/dawid-scripts/Fluent/releases/latest/download/main.lua"))()
 
 local Window = Fluent:CreateWindow({
-    Title = "HadesGod [Free Premium 7 Days]",
-    SubTitle = " By ZkanixZ#0 • Hades_x112#0",
+    Title = "Npc Hub [Premium]",
+    SubTitle = " By Omar",
     TabWidth = 140,
     Size = UDim2.fromOffset(480, 320),
     Acrylic = false, 
@@ -2770,7 +2770,7 @@ local Window = Fluent:CreateWindow({
 })
 
 local Tabs = {
-	Settings = Window:AddTab({ Title = "Setting", Icon = "" }),
+	Settings = Window:AddTab({ Title = "Setting-Configs", Icon = "" }),
     Sh = Window:AddTab({ Title = "Shop", Icon = "" }),
     Main = Window:AddTab({ Title = "Farming", Icon = "" }),
     stack = Window:AddTab({ Title = "Stack Auto Farm", Icon = "" }), 
@@ -2856,21 +2856,21 @@ function RedeemCode(value)
         end
     })
     Tabs.Sh:AddButton({
-        Title = "Teleport Sea 1",
+        Title = "Teleport Old World",
         Description = "faster teleport to old world with 1 click",
         Callback = function()            
 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("TravelMain")
         end
     })
     Tabs.Sh:AddButton({
-        Title = "Teleport Sea 2",
+        Title = "Teleport New World",
         Description = "faster teleport to new world with 1 click",
         Callback = function()            
 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("TravelDressrosa")
         end
     })
     Tabs.Sh:AddButton({
-        Title = "Teleport Sea 3",
+        Title = "Teleport Third World",
         Description = "faster teleport to third world with 1 click",
         Callback = function()            
 game:GetService("ReplicatedStorage").Remotes.CommF_:InvokeServer("TravelZou")
